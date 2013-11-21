@@ -1,3 +1,6 @@
+// Author: Casey Anderson
+// Date: 11/20/13
+
 #ifndef HEADER_LISTDISPLAY
 #define HEADER_LISTDISPLAY
 
@@ -10,7 +13,11 @@
 //#include "Globals.h"
 
 using namespace std;
-
+/*
+This class is used as an object for storing and displaying a list of strings on a PCD8544
+monochrome display. It allows the user to scroll up and down the list which just changes which string
+is highlighted. It currently only works right if each string fits on one line.
+*/
 class ListDisplay
 {
  public:

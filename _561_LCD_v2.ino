@@ -1,3 +1,6 @@
+// Author: Casey Anderson
+// Date: 11/20/13
+
 #include <StandardCplusplus.h>
 #include <serstream>
 #include <vector>
