@@ -79,7 +79,8 @@ void setup()
   lists.push_back(list3);
   master.setLists(lists);
   
-  list.drawItems(LCDdisplay);
+//  list.drawItems(LCDdisplay);
+  master.drawCurrList(LCDdisplay);
 }
 
 //Analog input pins
@@ -100,8 +101,6 @@ int yUpCnt = 0;
 int yDownCnt = 0;
 // Number of consecutive times above/below threshold to trigger a left/right/up/down
 const int cntThresh = 10;
-
-boolean fruits_active = true;
 
 void loop()
 {
@@ -145,11 +144,13 @@ void loop()
   if(xRightCnt > cntThresh)
   {
     Serial.println("x right");
+/*
     fruits_active = !fruits_active;
     if (fruits_active)
       list.drawItems(LCDdisplay);
     else
       list2.drawItems(LCDdisplay);
+*/
     while(analogRead(xPin) < xRightThresh);
     xRightCnt = 0;
   }
@@ -157,10 +158,13 @@ void loop()
   if(yUpCnt > cntThresh)
   {
     Serial.println("y up");
+    master.scrollUp(LCDdisplay);
+/*
     if (fruits_active)
       list.scrollUp(LCDdisplay);
     else
       list2.scrollUp(LCDdisplay);
+*/
     while(analogRead(yPin) < yUpThresh);
     yUpCnt = 0;
   }
@@ -168,10 +172,13 @@ void loop()
   if(yDownCnt > cntThresh)
   {
     Serial.println("y down");
+    master.scrollDown(LCDdisplay);
+/*
     if (fruits_active)
       list.scrollDown(LCDdisplay);
     else
       list2.scrollDown(LCDdisplay);
+*/
     while(analogRead(yPin) > yDownThresh);
     yDownCnt = 0;
   }

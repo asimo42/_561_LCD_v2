@@ -18,6 +18,8 @@ class ListCollection
   void scrollUp(Adafruit_PCD8544 LCDdisplay);
   void scrollLeft(Adafruit_PCD8544 LCDdisplay);
   void scrollRight(Adafruit_PCD8544 LCDdisplay);
+//  ListDisplay getCurrList();
+  void drawCurrList(Adafruit_PCD8544 LCDdisplay);
 
   private:
   // Holds all unique lists. e.g. list of people, list of actions, list of messages
