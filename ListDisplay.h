@@ -23,14 +23,17 @@ class ListDisplay
   void scrollDown(Adafruit_PCD8544 LCDdisplay);
   void scrollUp(Adafruit_PCD8544 LCDdisplay);
   string getString(int index);
+  ListDisplay getListDisplay(int index);
 
   
  private:
 
   // String is diplayed on screen, ListDisplay pointer points to next ListDisplay for scroll right
   vector< pair<string, ListDisplay *> > _items;
+  
   // Index of item currently highlighted
   int _highlighted_item;
+  
   // Index of item currently at the top of the screen
   int _top_item;
   

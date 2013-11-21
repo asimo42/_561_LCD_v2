@@ -2,12 +2,15 @@
 #define HEADER_LISTCOLLECTION
 
 #include "ListDisplay.h"
+#include <stack>
 
-class ListDisplay
+using namespace std;
+
+class ListCollection
 {
   public:
-  ListDisplay();
-  ListDisplay(vector<ListDisplay> lists);
+  ListCollection();
+  ListCollection(vector<ListDisplay> lists);
   
   void setLists(vector<ListDisplay> lists);
   void scrollDown(Adafruit_PCD8544 LCDdisplay);
@@ -16,7 +19,14 @@ class ListDisplay
   void scrollRight(Adafruit_PCD8544 LCDdisplay);
 
   private:
+  // Holds all unique lists. e.g. list of people, list of actions, list of messages
   vector<ListDisplay> _lists;
+  
+  // Holds index of current list being displayed
+  int _current_list;
+  
+  // Holds indices of ListDisplays that have been navigated right through so scrollLeft() can retrace steps backward
+  stack _scroll_right_history;
 }
 
 #endif

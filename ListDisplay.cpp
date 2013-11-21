@@ -84,7 +84,15 @@ void ListDisplay::scrollUp(Adafruit_PCD8544 LCDdisplay)
   drawItems(LCDdisplay);
 }
 
+// Return string at index
 string ListDisplay::getString(int index)
 {
    return _items[index].first; 
+}
+
+// Return ListDisplay at index
+ListDisplay ListDisplay::getListDisplay(int index)
+{
+  ListDisplay *tmp = _items[index].second;
+  return *tmp;
 }
