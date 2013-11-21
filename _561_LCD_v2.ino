@@ -1,10 +1,12 @@
 #include <StandardCplusplus.h>
 #include <serstream>
 #include <vector>
+#include <stack>
 #include <iterator>
 #include <Adafruit_GFX.h>
 #include <Adafruit_PCD8544.h>
 #include "ListDisplay.h"
+#include "ListCollection.h"
 
 using namespace std;
 
@@ -16,13 +18,20 @@ namespace std
 }
 
 Adafruit_PCD8544 LCDdisplay = Adafruit_PCD8544(7, 6, 5, 4, 3);
+
 ListDisplay list;
 ListDisplay list2;
+ListDisplay list3;
 char* vec_fruits[] = {"Apple", "Banana", "Peaches", "Strawberries", "melon", "cherry", "tomatoe", "orange"};
 char* vec_actions[] = {"Eat", "Smash", "Make pie"};
+char* vec_times[] = {"Immediately", "ASAP", "Soon", "In 10 min", "Tomorrow"};
 const int NUM_FRUITS = sizeof(vec_fruits) / sizeof(vec_fruits[0]);
 const int NUM_ACTIONS = sizeof(vec_actions) / sizeof(vec_actions[0]);
+const int NUM_TIMES = sizeof(vec_times) / sizeof(vec_times[0]);
+const int NUM_LISTS = 3;
 
+// Top level collection of all ListDisplays
+ListCollection master;
 
 void setup()
 {
@@ -30,6 +39,7 @@ void setup()
   
   cout << NUM_FRUITS << endl;
   cout << NUM_ACTIONS << endl;
+  cout << NUM_TIMES << endl;
   
   LCDdisplay.begin();
   LCDdisplay.setContrast(50);
@@ -44,15 +54,30 @@ void setup()
   {
     fruits.push_back(make_pair(vec_fruits[i], &list2));
   }
-   list.setItems(fruits);
+  list.setItems(fruits);
   
   // Initialize actions list
   vector< pair<string, ListDisplay *> > actions;
   for(int i = 0; i < NUM_ACTIONS; ++i)
   {
-    actions.push_back(make_pair(vec_actions[i], &list));
+    actions.push_back(make_pair(vec_actions[i], &list3));
   }
-   list2.setItems(actions);
+  list2.setItems(actions);
+  
+  // Initialize times list
+  vector< pair<string, ListDisplay *> > times;
+  for(int i = 0; i < NUM_TIMES; ++i)
+  {
+    times.push_back(make_pair(vec_times[i], &list));
+  }
+  list3.setItems(times);
+   
+  // Initialize master List Collection
+  vector<ListDisplay> lists;
+  lists.push_back(list);
+  lists.push_back(list2);
+  lists.push_back(list3);
+  master.setLists(lists);
   
   list.drawItems(LCDdisplay);
 }

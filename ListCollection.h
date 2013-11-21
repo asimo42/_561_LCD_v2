@@ -1,8 +1,9 @@
 #ifndef HEADER_LISTCOLLECTION
 #define HEADER_LISTCOLLECTION
 
-#include "ListDisplay.h"
 #include <stack>
+#include "ListDisplay.h"
+//#include <stack>
 
 using namespace std;
 
@@ -26,8 +27,8 @@ class ListCollection
   int _current_list;
   
   // Holds indices of ListDisplays that have been navigated right through so scrollLeft() can retrace steps backward
-  stack _scroll_right_history;
-}
+  stack<int> _scroll_right_history;
+};
 
 #endif
 
