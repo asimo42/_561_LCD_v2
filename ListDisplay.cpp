@@ -8,7 +8,7 @@ ListDisplay::ListDisplay()
   
 }
 
-ListDisplay::ListDisplay(vector<string> items)
+ListDisplay::ListDisplay(vector< pair<string, ListDisplay *> > items)
 {
   _items = items;
   _highlighted_item = 0;
@@ -23,11 +23,13 @@ void ListDisplay::printItems()
 }
 */
 
-void ListDisplay::setItems(vector<string> items)
+void ListDisplay::setItems(vector< pair<string, ListDisplay *> > items)
 {
   _items = items;
 }
 
+// Draws six items on the screen starting with _top_item.
+// This only works for strings that only take up one line.
 void ListDisplay::drawItems(Adafruit_PCD8544 LCDdisplay)
 {
   LCDdisplay.clearDisplay();
@@ -39,17 +41,19 @@ void ListDisplay::drawItems(Adafruit_PCD8544 LCDdisplay)
     if(_highlighted_item == i)
     {
       LCDdisplay.setTextColor(WHITE, BLACK);
-      LCDdisplay.println(_items[i].c_str());
+      LCDdisplay.println(getString(i).c_str());
     }
     else
     {
       LCDdisplay.setTextColor(BLACK, WHITE);
-      LCDdisplay.println(_items[i].c_str());
+      LCDdisplay.println(getString(i).c_str());
     }
   }
   LCDdisplay.display();
 }
 
+// Scrolls down the list. i.e. increments _highlighted_item.
+// If bottom of screen is reached, _top_item is adjusted.
 void ListDisplay::scrollDown(Adafruit_PCD8544 LCDdisplay)
 { 
   if(_highlighted_item < _items.size() - 1)
@@ -64,6 +68,8 @@ void ListDisplay::scrollDown(Adafruit_PCD8544 LCDdisplay)
   drawItems(LCDdisplay);
 }
 
+// Scrolls up the list. i.e. decrements _highlighted_item.
+// If top of screen is reached, _top_item is adjusted.
 void ListDisplay::scrollUp(Adafruit_PCD8544 LCDdisplay)
 {
   if(_highlighted_item > 0) 
@@ -78,4 +84,7 @@ void ListDisplay::scrollUp(Adafruit_PCD8544 LCDdisplay)
   drawItems(LCDdisplay);
 }
 
-
+string ListDisplay::getString(int index)
+{
+   return _items[index].first; 
+}

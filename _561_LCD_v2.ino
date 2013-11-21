@@ -17,8 +17,11 @@ namespace std
 
 Adafruit_PCD8544 LCDdisplay = Adafruit_PCD8544(7, 6, 5, 4, 3);
 ListDisplay list;
-char* vec_fruits[] = {"Apple", "Banana", "Peach", "Strawberries", "melon", "cherry", "tomatoe", "orange"};
+ListDisplay list2;
+char* vec_fruits[] = {"Apple", "Banana", "Peaches", "Strawberries", "melon", "cherry", "tomatoe", "orange"};
+char* vec_actions[] = {"Eat", "Smash", "Make pie"};
 const int NUM_FRUITS = sizeof(vec_fruits) / sizeof(vec_fruits[0]);
+const int NUM_ACTIONS = sizeof(vec_actions) / sizeof(vec_actions[0]);
 
 
 void setup()
@@ -26,6 +29,7 @@ void setup()
   Serial.begin(9600);
   
   cout << NUM_FRUITS << endl;
+  cout << NUM_ACTIONS << endl;
   
   LCDdisplay.begin();
   LCDdisplay.setContrast(50);
@@ -34,13 +38,21 @@ void setup()
   LCDdisplay.setTextColor(BLACK);
   LCDdisplay.setCursor(0,0);
   
-  vector<string> fruits;
+  // Initialize fruit list
+  vector< pair<string, ListDisplay *> > fruits;
   for(int i = 0; i < NUM_FRUITS; ++i)
   {
-    fruits.push_back(vec_fruits[i]);
+    fruits.push_back(make_pair(vec_fruits[i], &list2));
   }
- 
-  list.setItems(fruits);
+   list.setItems(fruits);
+  
+  // Initialize actions list
+  vector< pair<string, ListDisplay *> > actions;
+  for(int i = 0; i < NUM_ACTIONS; ++i)
+  {
+    actions.push_back(make_pair(vec_actions[i], &list));
+  }
+   list2.setItems(actions);
   
   list.drawItems(LCDdisplay);
 }
