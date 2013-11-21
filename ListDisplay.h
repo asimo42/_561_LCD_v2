@@ -23,26 +23,35 @@ class ListDisplay
  public:
  
   ListDisplay();  
-  ListDisplay(vector< pair<string, ListDisplay *> > items);
+  ListDisplay(vector< pair<string, int> > items);
   
-  void setItems(vector< pair<string, ListDisplay *> > items);
+  void setItems(vector< pair<string, int> > items);
   void drawItems(Adafruit_PCD8544 LCDdisplay);
   void scrollDown(Adafruit_PCD8544 LCDdisplay);
   void scrollUp(Adafruit_PCD8544 LCDdisplay);
   string getString(int index);
-  ListDisplay getListDisplay(int index);
-
+//  ListDisplay getNextList(int index);
+//  ListDisplay getNextList();
+  void setIndex(int index) {_index = index;}
+  int getIndex() {return _index;}
+  int getNextIndex();
   
  private:
 
   // String is diplayed on screen, ListDisplay pointer points to next ListDisplay for scroll right
-  vector< pair<string, ListDisplay *> > _items;
+  //vector< pair<string, ListDisplay *> > _items;
+  vector< pair<string, int> > _items;
   
   // Index of item currently highlighted
   int _highlighted_item;
   
   // Index of item currently at the top of the screen
   int _top_item;
+  
+  // Index in the higher level ListCollection
+  int _index;
+  
+
   
 };
 

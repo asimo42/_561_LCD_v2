@@ -25,9 +25,9 @@ Adafruit_PCD8544 LCDdisplay = Adafruit_PCD8544(7, 6, 5, 4, 3);
 ListDisplay list;
 ListDisplay list2;
 ListDisplay list3;
-char* vec_fruits[] = {"Apple", "Banana", "Peaches", "Strawberries", "melon", "cherry", "tomatoe", "orange"};
-char* vec_actions[] = {"Eat", "Smash", "Make pie"};
-char* vec_times[] = {"Immediately", "ASAP", "Soon", "In 10 min", "Tomorrow"};
+char* vec_fruits[] = {"Apple", "Banana", "Peaches", "Strawberries", "melon", "cherry", "tomatoe", "orange"};  //Index 0
+char* vec_actions[] = {"Eat", "Smash", "Make pie"};                                                           //Index 1
+char* vec_times[] = {"Immediately", "ASAP", "Soon", "In 10 min", "Tomorrow"};                                 //Index 2
 const int NUM_FRUITS = sizeof(vec_fruits) / sizeof(vec_fruits[0]);
 const int NUM_ACTIONS = sizeof(vec_actions) / sizeof(vec_actions[0]);
 const int NUM_TIMES = sizeof(vec_times) / sizeof(vec_times[0]);
@@ -52,28 +52,31 @@ void setup()
   LCDdisplay.setCursor(0,0);
   
   // Initialize fruit list
-  vector< pair<string, ListDisplay *> > fruits;
+  vector< pair<string, int> > fruits;
   for(int i = 0; i < NUM_FRUITS; ++i)
   {
-    fruits.push_back(make_pair(vec_fruits[i], &list2));
+    fruits.push_back(make_pair(vec_fruits[i], 1));
   }
   list.setItems(fruits);
+  list.setIndex(0);
   
   // Initialize actions list
-  vector< pair<string, ListDisplay *> > actions;
+  vector< pair<string, int> > actions;
   for(int i = 0; i < NUM_ACTIONS; ++i)
   {
-    actions.push_back(make_pair(vec_actions[i], &list3));
+    actions.push_back(make_pair(vec_actions[i], 2));
   }
   list2.setItems(actions);
+  list2.setIndex(1);
   
   // Initialize times list
-  vector< pair<string, ListDisplay *> > times;
+  vector< pair<string, int> > times;
   for(int i = 0; i < NUM_TIMES; ++i)
   {
-    times.push_back(make_pair(vec_times[i], &list));
+    times.push_back(make_pair(vec_times[i], 0));
   }
   list3.setItems(times);
+  list3.setIndex(2);
    
   // Initialize master List Collection
   vector<ListDisplay> lists;
@@ -154,6 +157,7 @@ void loop()
     else
       list2.drawItems(LCDdisplay);
 */
+    master.scrollRight(LCDdisplay);
     while(analogRead(xPin) < xRightThresh);
     xRightCnt = 0;
   }

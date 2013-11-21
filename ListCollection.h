@@ -24,7 +24,7 @@ class ListCollection
   ListCollection();
   ListCollection(vector<ListDisplay> lists);
   
-  void setLists(vector<ListDisplay> lists);
+  void setLists(vector<ListDisplay> &lists);
   void scrollDown(Adafruit_PCD8544 LCDdisplay);
   void scrollUp(Adafruit_PCD8544 LCDdisplay);
   void scrollLeft(Adafruit_PCD8544 LCDdisplay);
