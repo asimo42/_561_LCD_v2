@@ -43,6 +43,17 @@ void ListCollection::scrollUp(Adafruit_PCD8544 LCDdisplay)
 void ListCollection::scrollLeft(Adafruit_PCD8544 LCDdisplay)
 {
   
+  if(!_scroll_right_history.empty())
+  {
+    // update current index with stack value
+    _current_list = _scroll_right_history.top();
+    
+    // pop current list index off stack
+    _scroll_right_history.pop();
+  
+    // display current list
+    drawCurrList(LCDdisplay);
+  }
 }
 
 void ListCollection::scrollRight(Adafruit_PCD8544 LCDdisplay)

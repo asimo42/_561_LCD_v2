@@ -143,6 +143,7 @@ void loop()
   if(xLeftCnt > cntThresh)
   {
     Serial.println("x left");
+    master.scrollLeft(LCDdisplay);
     while(analogRead(xPin) > xLeftThresh);
     xLeftCnt = 0;
   }
