@@ -58,25 +58,33 @@ void ListCollection::scrollLeft(Adafruit_PCD8544 LCDdisplay)
 
 void ListCollection::scrollRight(Adafruit_PCD8544 LCDdisplay)
 {
-  // update stack with current list index
-  _scroll_right_history.push(_current_list);
-  
-  // update current list index
-  _current_list = _lists[_current_list].getNextIndex();
-/*
-  ListDisplay tmp = _lists[_current_list];
-  cout << "Current index: " << tmp.index << endl;
-  ListDisplay next = tmp.getNextList();
-  cout << "Next index: " << next.index << endl;
-  //_current_list = _lists[_current_list].getNextList().index;
-  if(_current_list < 2)
-    _current_list++;
-*/
-  cout << "_current_list changed to: " << _current_list << endl;
-
-  
-  // display current list
-  drawCurrList(LCDdisplay);
+  if(_lists[_current_list].getNextIndex() >= 0)  // keep traversing right
+  {
+    // update stack with current list index
+    _scroll_right_history.push(_current_list);
+    
+    // update current list index
+    _current_list = _lists[_current_list].getNextIndex();
+    
+ //   cout << "_current_list changed to: " << _current_list << endl;
+    
+    // display current list
+    drawCurrList(LCDdisplay);
+  }
+  else  // send messge (should probably make this its own private function
+        // because it's going to get a lot more complicated)
+  {
+    while(!_scroll_right_history.empty())
+    {
+      cout << _lists[_current_list].getString() << " ";
+      _current_list = _scroll_right_history.top();
+      _scroll_right_history.pop();     
+    }
+    cout << _lists[_current_list].getString() << endl;
+    
+    // display current list (should be starting point now)
+    drawCurrList(LCDdisplay);
+  }
 }
 
 /*

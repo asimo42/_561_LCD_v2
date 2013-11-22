@@ -93,6 +93,11 @@ string ListDisplay::getString(int index)
    return _items[index].first; 
 }
 
+string ListDisplay::getString()
+{
+  return _items[_highlighted_item].first;
+}
+
 int ListDisplay::getNextIndex()
 {
   return _items[_highlighted_item].second;

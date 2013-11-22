@@ -22,16 +22,28 @@ namespace std
 
 Adafruit_PCD8544 LCDdisplay = Adafruit_PCD8544(7, 6, 5, 4, 3);
 
-ListDisplay list;
+ListDisplay list0;
+ListDisplay list1;
 ListDisplay list2;
 ListDisplay list3;
+/*
 char* vec_fruits[] = {"Apple", "Banana", "Peaches", "Strawberries", "melon", "cherry", "tomatoe", "orange"};  //Index 0
 char* vec_actions[] = {"Eat", "Smash", "Make pie"};                                                           //Index 1
-char* vec_times[] = {"Immediately", "ASAP", "Soon", "In 10 min", "Tomorrow"};                                 //Index 2
-const int NUM_FRUITS = sizeof(vec_fruits) / sizeof(vec_fruits[0]);
-const int NUM_ACTIONS = sizeof(vec_actions) / sizeof(vec_actions[0]);
-const int NUM_TIMES = sizeof(vec_times) / sizeof(vec_times[0]);
-const int NUM_LISTS = 3;
+char* vec_times[] = {"Immediately", "ASAP", "Soon", "In 10 min", "Tomorrow"};                                //Index 2
+*/
+#define  ADVERBS  0
+#define  CLOTHES  1
+#define  PERSON   2
+#define  ACTION   3
+char* vec0[] = {"immediately", "quickly", "slowly", "violently", "seductively", "angrily", "in 5 min.", "eventually"};           //Index 0
+char* vec1[] = {"jacket", "pants", "shirt", "socks", "underwear", "bra", };          //Index 1
+char* vec2[] = {"your", "my", "both of our", "Miley Cyrus's"};              //Index 2
+char* vec3[] = {"Take off", "Rip off", "Put on", "Destroy", "Obliterate", "Ignite", "Eat", "Lick", "Clean", "Idolize"};        //Index 3
+const int NUM0 = sizeof(vec0) / sizeof(vec0[0]);
+const int NUM1 = sizeof(vec1) / sizeof(vec1[0]);
+const int NUM2 = sizeof(vec2) / sizeof(vec2[0]);
+const int NUM3 = sizeof(vec3) / sizeof(vec3[0]);
+const int NUM_LISTS = 4;
 
 // Top level collection of all ListDisplays
 ListCollection master;
@@ -40,10 +52,6 @@ void setup()
 {
   Serial.begin(9600);
   
-  cout << NUM_FRUITS << endl;
-  cout << NUM_ACTIONS << endl;
-  cout << NUM_TIMES << endl;
-  
   LCDdisplay.begin();
   LCDdisplay.setContrast(50);
   LCDdisplay.clearDisplay();
@@ -51,36 +59,46 @@ void setup()
   LCDdisplay.setTextColor(BLACK);
   LCDdisplay.setCursor(0,0);
   
-  // Initialize fruit list
-  vector< pair<string, int> > fruits;
-  for(int i = 0; i < NUM_FRUITS; ++i)
+  // Initialize list0
+  vector< pair<string, int> > vector0;
+  for(int i = 0; i < NUM0; ++i)
   {
-    fruits.push_back(make_pair(vec_fruits[i], 1));
+    vector0.push_back(make_pair(vec0[i], CLOTHES));
   }
-  list.setItems(fruits);
-  list.setIndex(0);
+  list0.setItems(vector0);
+  list0.setIndex(ADVERBS);
   
-  // Initialize actions list
-  vector< pair<string, int> > actions;
-  for(int i = 0; i < NUM_ACTIONS; ++i)
+  // Initialize list1
+  vector< pair<string, int> > vector1;
+  for(int i = 0; i < NUM1; ++i)
   {
-    actions.push_back(make_pair(vec_actions[i], 2));
+    vector1.push_back(make_pair(vec1[i], PERSON));
   }
-  list2.setItems(actions);
-  list2.setIndex(1);
+  list1.setItems(vector1);
+  list1.setIndex(CLOTHES);
   
-  // Initialize times list
-  vector< pair<string, int> > times;
-  for(int i = 0; i < NUM_TIMES; ++i)
+  // Initialize list2
+  vector< pair<string, int> > vector2;
+  for(int i = 0; i < NUM2; ++i)
   {
-    times.push_back(make_pair(vec_times[i], 0));
+    vector2.push_back(make_pair(vec2[i], ACTION));
   }
-  list3.setItems(times);
-  list3.setIndex(2);
+  list2.setItems(vector2);
+  list2.setIndex(PERSON);
+  
+  // Initialize list3
+  vector< pair<string, int> > vector3;
+  for(int i = 0; i < NUM3; ++i)
+  {
+    vector3.push_back(make_pair(vec3[i], -1));
+  }
+  list3.setItems(vector3);
+  list3.setIndex(ACTION);
    
   // Initialize master List Collection
   vector<ListDisplay> lists;
-  lists.push_back(list);
+  lists.push_back(list0);
+  lists.push_back(list1);
   lists.push_back(list2);
   lists.push_back(list3);
   master.setLists(lists);
@@ -142,7 +160,7 @@ void loop()
 
   if(xLeftCnt > cntThresh)
   {
-    Serial.println("x left");
+//    Serial.println("x left");
     master.scrollLeft(LCDdisplay);
     while(analogRead(xPin) > xLeftThresh);
     xLeftCnt = 0;
@@ -150,7 +168,7 @@ void loop()
   
   if(xRightCnt > cntThresh)
   {
-    Serial.println("x right");
+//    Serial.println("x right");
 /*
     fruits_active = !fruits_active;
     if (fruits_active)
@@ -165,7 +183,7 @@ void loop()
   
   if(yUpCnt > cntThresh)
   {
-    Serial.println("y up");
+//    Serial.println("y up");
     master.scrollUp(LCDdisplay);
 /*
     if (fruits_active)
@@ -179,7 +197,7 @@ void loop()
   
   if(yDownCnt > cntThresh)
   {
-    Serial.println("y down");
+//    Serial.println("y down");
     master.scrollDown(LCDdisplay);
 /*
     if (fruits_active)
