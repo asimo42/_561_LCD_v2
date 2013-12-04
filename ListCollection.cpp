@@ -4,6 +4,8 @@
 #include "ListCollection.h"
 #include <serstream>
 
+#define PIN_BUZZER  8
+
 using namespace std;
 
 ListCollection::ListCollection()
@@ -81,6 +83,13 @@ void ListCollection::scrollRight(Adafruit_PCD8544 LCDdisplay)
       _scroll_right_history.pop();     
     }
     cout << _lists[_current_list].getString() << endl;
+    
+    // TODO: Print message sent on screen
+    
+    // vibrate buzzer
+    digitalWrite(PIN_BUZZER, LOW);  // buzzer on
+    delay(500);
+    digitalWrite(PIN_BUZZER, HIGH);  // buzzer off
     
     // display current list (should be starting point now)
     drawCurrList(LCDdisplay);

@@ -35,10 +35,12 @@ char* vec_times[] = {"Immediately", "ASAP", "Soon", "In 10 min", "Tomorrow"};   
 #define  CLOTHES  1
 #define  PERSON   2
 #define  ACTION   3
+#define PIN_BUZZER  8
+
 char* vec0[] = {"immediately", "quickly", "slowly", "violently", "seductively", "angrily", "in 5 min.", "eventually"};           //Index 0
 char* vec1[] = {"jacket", "pants", "shirt", "socks", "underwear", "bra", };          //Index 1
 char* vec2[] = {"your", "my", "both of our", "Miley Cyrus's"};              //Index 2
-char* vec3[] = {"Take off", "Rip off", "Put on", "Destroy", "Obliterate", "Ignite", "Eat", "Lick", "Clean", "Idolize"};        //Index 3
+char* vec3[] = {"Take off", "Rip off", "Put on", "Destroy", "Obliterate", "Ignite", "Eat", "Lick", "Clean"};        //Index 3
 const int NUM0 = sizeof(vec0) / sizeof(vec0[0]);
 const int NUM1 = sizeof(vec1) / sizeof(vec1[0]);
 const int NUM2 = sizeof(vec2) / sizeof(vec2[0]);
@@ -51,6 +53,10 @@ ListCollection master;
 void setup()
 {
   Serial.begin(9600);
+  
+  // Set buzzer pin as output
+  pinMode(PIN_BUZZER, OUTPUT);
+  digitalWrite(PIN_BUZZER, HIGH);  //buzzer off
   
   LCDdisplay.begin();
   LCDdisplay.setContrast(50);
