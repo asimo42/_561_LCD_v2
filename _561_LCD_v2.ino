@@ -37,10 +37,10 @@ char* vec_times[] = {"Immediately", "ASAP", "Soon", "In 10 min", "Tomorrow"};   
 #define  ACTION   3
 #define PIN_BUZZER  8
 
-char* vec0[] = {"immediately", "quickly", "slowly", "violently", "seductively", "angrily", "in 5 min.", "eventually"};           //Index 0
-char* vec1[] = {"jacket", "pants", "shirt", "socks", "underwear", "bra", };          //Index 1
-char* vec2[] = {"your", "my", "both of our", "Miley Cyrus's"};              //Index 2
-char* vec3[] = {"Take off", "Rip off", "Put on", "Destroy", "Obliterate", "Ignite", "Eat", "Lick", "Clean"};        //Index 3
+char* vec0[] = {"immediately", "quickly", "soon", "in 5 min.", "eventually"};           //Index 0
+char* vec1[] = {" ", "John", "Bob", "Ryan", "Sally", "Kevin", "Casey", "Amanda"};          //Index 1
+char* vec2[] = {"Find", "Help", "Serve food", "Cut the cake", "Play music"};              //Index 2
+char* vec3[] = {"To All:", "To John:", "To Bob:", "To Ryan:", "To Sally:", "To Kevin:", "To Casey:", "To Amanda:"};        //Index 3
 const int NUM0 = sizeof(vec0) / sizeof(vec0[0]);
 const int NUM1 = sizeof(vec1) / sizeof(vec1[0]);
 const int NUM2 = sizeof(vec2) / sizeof(vec2[0]);

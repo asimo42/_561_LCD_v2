@@ -76,6 +76,7 @@ void ListCollection::scrollRight(Adafruit_PCD8544 LCDdisplay)
   else  // send messge (should probably make this its own private function
         // because it's going to get a lot more complicated)
   {
+    cout << endl;
     while(!_scroll_right_history.empty())
     {
       cout << _lists[_current_list].getString() << " ";
