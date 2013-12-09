@@ -11,6 +11,7 @@
 #include <TimeAlarms.h>
 #include "ListDisplay.h"
 #include "ListCollection.h"
+#include "EventAlarms.h"
 
 using namespace std;
 
@@ -48,15 +49,9 @@ const int NUM2 = sizeof(vec2) / sizeof(vec2[0]);
 const int NUM3 = sizeof(vec3) / sizeof(vec3[0]);
 const int NUM_LISTS = 4;
 
-typedef struct HMS_time
-{
-  int hour;
-  int min;
-  int sec;
-};
-
-char* events[] = {"Everyone seated.", "Bride and groom enter.", "Serve food.", "Best man toast.", "Cut cake."};
-HMS_time times = {HMS_time(1,2,3)};
+// sets alarms for scheduled events
+EventAlarms event_alarms;
+char* events[] = {"Everyone seated.", "Bride and groom enter.", "Serve food."};
 const int NUM_EVENTS = sizeof(events) / sizeof(events[0]);
 
 // Top level collection of all ListDisplays
@@ -67,7 +62,7 @@ void setup()
   Serial.begin(9600);
   
   setTime(17,0,0,12,1,13); // set time to Saturday 5:00:00pm Dec 1 2013
-  Alarm.timerRepeat(0, 0, 15, Repeats);
+  //Alarm.timerRepeat(0, 0, 15, Repeats);
   
   // Set buzzer pin as output
   pinMode(PIN_BUZZER, OUTPUT);
@@ -80,11 +75,18 @@ void setup()
   LCDdisplay.setTextColor(BLACK);
   LCDdisplay.setCursor(0,0);
   
-  // Initialize event alarms
-  for(int i = 0; i < NUM_EVENTS; i++)
-  {
-    
-  }
+  // Initialize events
+  vector<pair<string, HMS_time> > event_list;
+  HMS_time time0 = {17, 0, 10};
+  HMS_time time1 = {17, 0, 15};
+  HMS_time time2 = {17, 0, 30};
+  
+  event_list.push_back(make_pair(events[0], time0));
+  event_list.push_back(make_pair(events[1], time1));
+  event_list.push_back(make_pair(events[2], time2));
+  
+  event_alarms.setEvents(event_list);
+  event_alarms.setAllAlarms();
   
   // Initialize list0
   vector< pair<string, int> > vector0;
