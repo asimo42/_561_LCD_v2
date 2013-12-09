@@ -5,9 +5,10 @@
 #include <serstream>
 #include <vector>
 #include <stack>
-#include <iterator>
 #include <Adafruit_GFX.h>
 #include <Adafruit_PCD8544.h>
+#include <Time.h>
+#include <TimeAlarms.h>
 #include "ListDisplay.h"
 #include "ListCollection.h"
 
@@ -47,12 +48,26 @@ const int NUM2 = sizeof(vec2) / sizeof(vec2[0]);
 const int NUM3 = sizeof(vec3) / sizeof(vec3[0]);
 const int NUM_LISTS = 4;
 
+typedef struct HMS_time
+{
+  int hour;
+  int min;
+  int sec;
+};
+
+char* events[] = {"Everyone seated.", "Bride and groom enter.", "Serve food.", "Best man toast.", "Cut cake."};
+HMS_time times = {HMS_time(1,2,3)};
+const int NUM_EVENTS = sizeof(events) / sizeof(events[0]);
+
 // Top level collection of all ListDisplays
 ListCollection master;
 
 void setup()
 {
   Serial.begin(9600);
+  
+  setTime(17,0,0,12,1,13); // set time to Saturday 5:00:00pm Dec 1 2013
+  Alarm.timerRepeat(0, 0, 15, Repeats);
   
   // Set buzzer pin as output
   pinMode(PIN_BUZZER, OUTPUT);
@@ -64,6 +79,12 @@ void setup()
   LCDdisplay.setTextSize(1);
   LCDdisplay.setTextColor(BLACK);
   LCDdisplay.setCursor(0,0);
+  
+  // Initialize event alarms
+  for(int i = 0; i < NUM_EVENTS; i++)
+  {
+    
+  }
   
   // Initialize list0
   vector< pair<string, int> > vector0;
@@ -134,6 +155,8 @@ const int cntThresh = 10;
 
 void loop()
 {
+  //digitalClockDisplay();
+  Alarm.delay(0);  // must include this delay function to service alarms
   
   //***********************************
   // Read slider values and update counters
@@ -175,13 +198,6 @@ void loop()
   if(xRightCnt > cntThresh)
   {
 //    Serial.println("x right");
-/*
-    fruits_active = !fruits_active;
-    if (fruits_active)
-      list.drawItems(LCDdisplay);
-    else
-      list2.drawItems(LCDdisplay);
-*/
     master.scrollRight(LCDdisplay);
     while(analogRead(xPin) < xRightThresh);
     xRightCnt = 0;
@@ -191,12 +207,6 @@ void loop()
   {
 //    Serial.println("y up");
     master.scrollUp(LCDdisplay);
-/*
-    if (fruits_active)
-      list.scrollUp(LCDdisplay);
-    else
-      list2.scrollUp(LCDdisplay);
-*/
     while(analogRead(yPin) < yUpThresh);
     yUpCnt = 0;
   }
@@ -205,13 +215,34 @@ void loop()
   {
 //    Serial.println("y down");
     master.scrollDown(LCDdisplay);
-/*
-    if (fruits_active)
-      list.scrollDown(LCDdisplay);
-    else
-      list2.scrollDown(LCDdisplay);
-*/
     while(analogRead(yPin) > yDownThresh);
     yDownCnt = 0;
   }
 }
+
+void Timer()
+{
+  cout << "Timer." << endl;
+}
+
+void Repeats(){
+  Serial.println("15 second timer");         
+}
+
+void digitalClockDisplay()
+{
+  // digital clock display of the time
+  Serial.print(hour());
+  printDigits(minute());
+  printDigits(second());
+  Serial.println(); 
+}
+
+void printDigits(int digits)
+{
+  Serial.print(":");
+  if(digits < 10)
+    Serial.print('0');
+  Serial.print(digits);
+}
+
