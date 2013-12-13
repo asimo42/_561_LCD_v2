@@ -45,7 +45,7 @@ void EventAlarms::setEvents(vector<pair<string, HMS_time> > &events)
 
 void EventAlarms::soundAlarm()
 {
-  cout << "Alarm index: " << _alarm_index << endl;
+  //cout << "Alarm index: " << _alarm_index << endl;
   cout << "Sounding alarm: " << _events[_alarm_index].first << endl;
   
   ++_alarm_index;

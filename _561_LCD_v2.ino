@@ -49,6 +49,8 @@ const int NUM2 = sizeof(vec2) / sizeof(vec2[0]);
 const int NUM3 = sizeof(vec3) / sizeof(vec3[0]);
 const int NUM_LISTS = 4;
 
+int myInt;
+
 // sets alarms for scheduled events
 EventAlarms event_alarms;
 char* events[] = {"Everyone seated.", "Bride and groom enter.", "Serve food."};
@@ -56,6 +58,9 @@ const int NUM_EVENTS = sizeof(events) / sizeof(events[0]);
 
 // Top level collection of all ListDisplays
 ListCollection master;
+
+char buffer[64];
+int bufferIndex = 0;
 
 void setup()
 {
@@ -74,6 +79,9 @@ void setup()
   LCDdisplay.setTextSize(1);
   LCDdisplay.setTextColor(BLACK);
   LCDdisplay.setCursor(0,0);
+  
+//  LCDdisplay.println("Starting...");
+//  delay(500);
   
   // Initialize events
   vector<pair<string, HMS_time> > event_list;
@@ -157,6 +165,51 @@ const int cntThresh = 10;
 
 void loop()
 {
+  /*
+  LCDdisplay.clearDisplay();
+  LCDdisplay.setCursor(0,0); 
+  LCDdisplay.println("Loop");
+  LCDdisplay.display();
+  delay(100);
+  */
+ // myInt = Serial.read();
+
+if (Serial.available() > 0){  
+  while(Serial.available() > 0)
+  {
+    char ch = Serial.read();
+    if (ch == '\r')
+    {
+      buffer[bufferIndex] = 0;
+      bufferIndex = 0;
+      
+      LCDdisplay.clearDisplay();
+      LCDdisplay.setCursor(0,0);
+      LCDdisplay.print("From PC>> ");
+      LCDdisplay.println(buffer);
+      LCDdisplay.print(" at ");
+      digitalClockDisplay();
+      LCDdisplay.display();
+      
+      buffer[0] = 0;
+    }
+    else buffer[bufferIndex++] = ch;
+  }
+  
+  
+/*   
+    //myInt = Serial.read();
+    LCDdisplay.clearDisplay();
+    LCDdisplay.setCursor(0,0);
+    LCDdisplay.print(">>");
+    //LCDdisplay.println(myInt);
+    LCDdisplay.println(buffer);
+    LCDdisplay.display();
+    delay(100);
+*/
+}
+  //  Serial.print(myInt);
+//    Serial.print("Reading Serial");
   //digitalClockDisplay();
   Alarm.delay(0);  // must include this delay function to service alarms
   
@@ -234,17 +287,17 @@ void Repeats(){
 void digitalClockDisplay()
 {
   // digital clock display of the time
-  Serial.print(hour());
+  LCDdisplay.print(hour());
   printDigits(minute());
   printDigits(second());
-  Serial.println(); 
+  LCDdisplay.println(); 
 }
 
 void printDigits(int digits)
 {
-  Serial.print(":");
+  LCDdisplay.print(":");
   if(digits < 10)
-    Serial.print('0');
-  Serial.print(digits);
+    LCDdisplay.print('0');
+  LCDdisplay.print(digits);
 }
 
