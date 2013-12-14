@@ -31,12 +31,13 @@ ListDisplay list3;
 /*
 char* vec_fruits[] = {"Apple", "Banana", "Peaches", "Strawberries", "melon", "cherry", "tomatoe", "orange"};  //Index 0
 char* vec_actions[] = {"Eat", "Smash", "Make pie"};                                                           //Index 1
-char* vec_times[] = {"Immediately", "ASAP", "Soon", "In 10 min", "Tomorrow"};                                //Index 2
+char* vec_times[] = {"Immediately", "ASAP", "Soon", "In 10 min", "Tomorrow"};                                 //Index 2
 */
-#define  ADVERBS  0
-#define  CLOTHES  1
-#define  PERSON   2
-#define  ACTION   3
+#define  ADVERB   3
+#define  WHO      2
+#define  ACTION   1
+#define  TOWHO    0
+
 #define PIN_BUZZER  8
 
 char* vec0[] = {"immediately", "quickly", "soon", "in 5 min.", "eventually"};           //Index 0
@@ -112,44 +113,44 @@ void setup()
   vector< pair<string, int> > vector0;
   for(int i = 0; i < NUM0; ++i)
   {
-    vector0.push_back(make_pair(vec0[i], CLOTHES));
+    vector0.push_back(make_pair(vec0[i], -1));
   }
   list0.setItems(vector0);
-  list0.setIndex(ADVERBS);
+  list0.setIndex(ADVERB);
   
   // Initialize list1
   vector< pair<string, int> > vector1;
   for(int i = 0; i < NUM1; ++i)
   {
-    vector1.push_back(make_pair(vec1[i], PERSON));
+    vector1.push_back(make_pair(vec1[i], ADVERB));
   }
   list1.setItems(vector1);
-  list1.setIndex(CLOTHES);
+  list1.setIndex(WHO);
   
   // Initialize list2
   vector< pair<string, int> > vector2;
   for(int i = 0; i < NUM2; ++i)
   {
-    vector2.push_back(make_pair(vec2[i], ACTION));
+    vector2.push_back(make_pair(vec2[i], WHO));
   }
   list2.setItems(vector2);
-  list2.setIndex(PERSON);
+  list2.setIndex(ACTION);
   
   // Initialize list3
   vector< pair<string, int> > vector3;
   for(int i = 0; i < NUM3; ++i)
   {
-    vector3.push_back(make_pair(vec3[i], -1));
+    vector3.push_back(make_pair(vec3[i], ACTION));
   }
   list3.setItems(vector3);
-  list3.setIndex(ACTION);
+  list3.setIndex(TOWHO);
    
   // Initialize master List Collection
   vector<ListDisplay> lists;
-  lists.push_back(list0);
-  lists.push_back(list1);
-  lists.push_back(list2);
   lists.push_back(list3);
+  lists.push_back(list2);
+  lists.push_back(list1);
+  lists.push_back(list0);
   master.setLists(lists);
   
 //  list.drawItems(LCDdisplay);
@@ -215,22 +216,8 @@ if (Serial.available() > 0){
     }
     else buffer[bufferIndex++] = ch;
   }
-  
-  
-/*   
-    //myInt = Serial.read();
-    LCDdisplay.clearDisplay();
-    LCDdisplay.setCursor(0,0);
-    LCDdisplay.print(">>");
-    //LCDdisplay.println(myInt);
-    LCDdisplay.println(buffer);
-    LCDdisplay.display();
-    delay(100);
-*/
 }
-  //  Serial.print(myInt);
-//    Serial.print("Reading Serial");
-  //digitalClockDisplay();
+
   Alarm.delay(0);  // must include this delay function to service alarms
   
   //***********************************

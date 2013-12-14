@@ -41,6 +41,8 @@ class ListCollection
   
   // Holds indices of ListDisplays that have been navigated right through so scrollLeft() can retrace steps backward
   stack<int> _scroll_right_history;
+  
+  void sendMessage(Adafruit_PCD8544 LCDdisplay);
 };
 
 #endif
