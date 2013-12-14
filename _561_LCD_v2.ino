@@ -11,7 +11,7 @@
 #include <TimeAlarms.h>
 #include "ListDisplay.h"
 #include "ListCollection.h"
-#include "EventAlarms.h"
+//#include "EventAlarms.h"
 
 using namespace std;
 
@@ -51,16 +51,27 @@ const int NUM_LISTS = 4;
 
 int myInt;
 
-// sets alarms for scheduled events
-EventAlarms event_alarms;
-char* events[] = {"Everyone seated.", "Bride and groom enter.", "Serve food."};
-const int NUM_EVENTS = sizeof(events) / sizeof(events[0]);
-
 // Top level collection of all ListDisplays
 ListCollection master;
 
 char buffer[64];
 int bufferIndex = 0;
+
+typedef struct HMS_time
+{
+  int hour;
+  int min;
+  int sec;
+} HMS_time;
+
+// Alarm stuff
+vector<pair<string, HMS_time> > event_list;
+int alarm_index = 0;
+
+// sets alarms for scheduled events
+//EventAlarms event_alarms;
+char* events[] = {"Everyone seated.", "Bride and groom enter.", "Serve food."};
+const int NUM_EVENTS = sizeof(events) / sizeof(events[0]);
 
 void setup()
 {
@@ -84,7 +95,6 @@ void setup()
 //  delay(500);
   
   // Initialize events
-  vector<pair<string, HMS_time> > event_list;
   HMS_time time0 = {17, 0, 10};
   HMS_time time1 = {17, 0, 15};
   HMS_time time2 = {17, 0, 30};
@@ -93,8 +103,10 @@ void setup()
   event_list.push_back(make_pair(events[1], time1));
   event_list.push_back(make_pair(events[2], time2));
   
-  event_alarms.setEvents(event_list);
-  event_alarms.setAllAlarms();
+  for(int i = 0; i < event_list.size(); i++)
+  {
+    Alarm.alarmOnce(event_list[i].second.hour, event_list[i].second.min, event_list[i].second.sec, soundAlarm);
+  }
   
   // Initialize list0
   vector< pair<string, int> > vector0;
@@ -192,6 +204,14 @@ if (Serial.available() > 0){
       LCDdisplay.display();
       
       buffer[0] = 0;
+      // buz  
+      digitalWrite(PIN_BUZZER, LOW);  // buzzer on
+      delay(250);
+      digitalWrite(PIN_BUZZER, HIGH); //buzzer off
+      delay(150);
+      digitalWrite(PIN_BUZZER, LOW);
+      delay(250);
+      digitalWrite(PIN_BUZZER, HIGH);
     }
     else buffer[bufferIndex++] = ch;
   }
@@ -273,6 +293,27 @@ if (Serial.available() > 0){
     while(analogRead(yPin) > yDownThresh);
     yDownCnt = 0;
   }
+}
+
+void soundAlarm()
+{
+  cout << "Event update: " << event_list[alarm_index].first << endl;
+  LCDdisplay.clearDisplay();
+  LCDdisplay.setCursor(0,0);
+  LCDdisplay.print("Event update: ");
+  LCDdisplay.print(event_list[alarm_index].first.c_str());
+  LCDdisplay.display();
+  
+  // buzz
+  digitalWrite(PIN_BUZZER, LOW);  // buzzer on
+  delay(250);
+  digitalWrite(PIN_BUZZER, HIGH); //buzzer off
+  delay(150);
+  digitalWrite(PIN_BUZZER, LOW);
+  delay(250);
+  digitalWrite(PIN_BUZZER, HIGH);
+  
+  ++alarm_index;
 }
 
 void Timer()
