@@ -83,6 +83,7 @@ void ListCollection::scrollRight(Adafruit_PCD8544 LCDdisplay)
 
 void ListCollection::sendMessage(Adafruit_PCD8544 LCDdisplay)
 {
+/*******************************************************
   // print strings in stack top item first
   cout << endl;
   while(!_scroll_right_history.empty())
@@ -92,8 +93,25 @@ void ListCollection::sendMessage(Adafruit_PCD8544 LCDdisplay)
     _scroll_right_history.pop();     
   }
   cout << _lists[_current_list].getString() << endl;
+********************************************************/  
+
+  // print strings in stack bottom item first
   
-  // TODO: print strings in stack bottom item first
+  vector<string> strings;
+  // put string in vector
+  while(!_scroll_right_history.empty())
+  {
+    strings.push_back(_lists[_current_list].getString());
+    _current_list = _scroll_right_history.top();
+    _scroll_right_history.pop();
+  }
+  strings.push_back(_lists[_current_list].getString());  
+  // print in reverse order
+  for (int i = strings.size()-1; i >= 0; --i)
+  {
+    cout << strings[i] << " ";
+  }
+  cout << endl;
   
   LCDdisplay.clearDisplay();
   LCDdisplay.setCursor(0,0);

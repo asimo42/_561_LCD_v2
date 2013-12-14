@@ -288,7 +288,8 @@ void soundAlarm()
   LCDdisplay.clearDisplay();
   LCDdisplay.setCursor(0,0);
   LCDdisplay.print("Event update: ");
-  LCDdisplay.print(event_list[alarm_index].first.c_str());
+  LCDdisplay.println(event_list[alarm_index].first.c_str());
+  digitalClockDisplay();
   LCDdisplay.display();
   
   // buzz
